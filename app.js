@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 
 
 //connect to mongodb via mongoose
-mongoose.connect("mongodb://0.0.0.0:27017/Games",{
+mongoose.connect("mongodb://127.0.0.1:27017/WebAPI",{
 }).then(function(){
     console.log("Connected to MongoDb Database");
 }).catch(function(err){
@@ -40,16 +40,25 @@ var Schema = mongoose.Schema;
 
 var GameData = new Schema({
     gamename:{
-        type:String
+        type:String,
+        required:true
+    },
+    gamestudio:{
+        type:String,
+        required:true
     }
 });
 
-var gameModel = mongoose.model('gameModel', GameData);
+var GameModel = mongoose.model('Games', GameData);
 
 app.get('/getdata',function(req,res){
-    gameModel.find({}).then(function(games){
-        res.json({games});
-    })
+    GameModel.find({}).then(function(gamedata){
+        console.log(gamedata)
+        res.json({gamedata});
+    }).catch(function(err){
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    });
 });
 
 app.listen(3000, function(){
