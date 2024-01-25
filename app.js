@@ -3,6 +3,11 @@ var app = express();
 var router = express.Router();
 var path = require('path');
 var mongoose = require('mongoose');
+var bodyparser = require("body-parser");
+
+app.use(express.json());
+app.use(bodyparser.urlencoded({extended:true}));
+app.use(bodyparser.json());
 
 
 //connect to mongodb via mongoose
@@ -12,6 +17,9 @@ mongoose.connect("mongodb://127.0.0.1:27017/WebAPI",{
 }).catch(function(err){
     console.log(err);
 }); 
+
+
+
 //var num = 6 *6;
 
 //console.log(num);
@@ -49,15 +57,30 @@ var GameData = new Schema({
     }
 });
 
-var GameModel = mongoose.model('Games', GameData);
+var GameModel = mongoose.model('games', GameData);
+
+//GameModel.find({}).then(function(game){console.log(game)});
 
 app.get('/getdata',function(req,res){
-    GameModel.find({}).then(function(gamedata){
-        console.log(gamedata)
-        res.json({gamedata});
+    GameModel.find({}).then(function(games){
+        console.log(games)
+        res.json({games});
     }).catch(function(err){
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
+    });
+});
+
+app.post('/deletegame', function(req,res){
+    console.log(req.body.game._id);
+    GameModel.findByIdAndDelete(req.body.game._id).exec();
+    res.redirect('games.html');
+})
+
+app.post('/updategame', function(req,res){
+    console.log(req.body);
+    GameModel.findByIdAndUpdate(req.body.id,{gamename:req.body.game}).then(function(){
+        res.redirect('games.html');
     });
 });
 
