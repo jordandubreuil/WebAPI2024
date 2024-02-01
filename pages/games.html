@@ -40,7 +40,7 @@
                         var updateButton = document.createElement('button');
                         updateButton.innerText = "Update Game";
                         updateButton.addEventListener('click', function(){
-                           window.location.replace('/update.html?id=' + game._id + '&name=' + game.gamename);
+                           window.location.replace('/update?id=' + game._id + '&name=' + game.gamename);
                         })
 
                         gameElement.appendChild(updateButton);
