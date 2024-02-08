@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
+var dataToSend;
 
 //Sets up routes to Database Schema
 require('../models/GameData')
@@ -24,6 +25,7 @@ router.post('/deletegame', function(req,res){
     res.redirect('games.html');
 })
 
+
 router.post('/updategame', function(req,res){
     console.log(req.body);
     GameModel.findByIdAndUpdate(req.body.id,{gamename:req.body.game}).then(function(){
@@ -38,6 +40,21 @@ router.post('/saveGame', function(req,res){
     new GameModel(req.body).save().then(function(){
         res.redirect('games.html');
     });
+});
+
+//Unity Data below
+router.post('/unity', function(req,res){
+    console.log("Unity Posted Data: ");
+    console.log(req.body);
+    dataToSend = req.body;
+    
+})
+
+router.get('/getUnity', function(req,res){
+
+    console.log("Data being sent");
+    console.log(dataToSend);
+    res.json(dataToSend);
 });
 
 module.exports = router
