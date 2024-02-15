@@ -5,7 +5,9 @@ var dataToSend;
 
 //Sets up routes to Database Schema
 require('../models/GameData')
+require('../models/UnityGameData')
 var GameModel = mongoose.model("games");
+var UnityModel = mongoose.model("unitygames");
 
 //All CRUD operations
 
@@ -45,16 +47,27 @@ router.post('/saveGame', function(req,res){
 //Unity Data below
 router.post('/unity', function(req,res){
     console.log("Unity Posted Data: ");
-    console.log(req.body);
-    dataToSend = req.body;
+    
+    //saves data in database
+    new UnityModel(req.body).save().then(function(){    
+        dataToSend = req.body;
+        console.log(req.body);
+    });
     
 })
 
 router.get('/getUnity', function(req,res){
 
     console.log("Data being sent");
-    console.log(dataToSend);
-    res.json(dataToSend);
+    //console.log(dataToSend);
+    //res.json(dataToSend);
+    UnityModel.find({}).then(function(playerdata){
+        console.log(playerdata)
+        res.json({playerdata});
+    }).catch(function(err){
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    });
 });
 
 module.exports = router
