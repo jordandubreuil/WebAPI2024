@@ -12,7 +12,7 @@ app.use(bodyparser.json());
 app.use('/', crud);
 
 //connect to mongodb via mongoose
-mongoose.connect("mongodb://127.0.0.1:27017/WebAPI",{
+mongoose.connect("mongodb://10.100.2.118/WebAPI",{
 }).then(function(){
     console.log("Connected to MongoDb Database");
 }).catch(function(err){
