@@ -12,7 +12,7 @@ app.use(bodyparser.json());
 app.use('/', crud);
 
 //connect to mongodb via mongoose
-mongoose.connect("mongodb://10.100.2.118/WebAPI",{
+mongoose.connect("mongodb://10.100.2.118:27017/WebAPI",{
 }).then(function(){
     console.log("Connected to MongoDb Database");
 }).catch(function(err){
@@ -63,6 +63,6 @@ app.get('/update', function(req,res){
 //GameModel.find({}).then(function(game){console.log(game)});
 
 
-app.listen(3000, function(){
-    console.log("Running on Port 3000");
+app.listen(8080, function(){
+    console.log("Running on Port 8080");
 })
